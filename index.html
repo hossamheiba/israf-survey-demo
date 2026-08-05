@@ -487,13 +487,14 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   letter-spacing: 0.02em;
 }
 
-/* Banner carousel — one card fully visible, the next peeking at the edge */
+/* Banner carousel — the live slide sits dead centre with the neighbours
+   peeking equally either side. Full-bleed track, no padding: slide(v)
+   does the centring so the maths stays in one place. */
 .carousel {
   margin-top: 26px;
   position: relative;
   overflow: hidden;
   margin-inline: -34px;
-  padding-inline: 34px;
 }
 .track {
   display: flex;
@@ -501,11 +502,10 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   /* long, fully-eased glide — the slide is ambient, it should never snap */
   transition: transform 1.05s cubic-bezier(0.33, 0.02, 0.16, 1);
 }
-.stage[dir="rtl"] .track { flex-direction: row-reverse; }
 /* Photo slide: full-bleed image, a scrim that only darkens the text side,
    then the wording. Swap .banner-img's src for the client's photography. */
 .banner {
-  flex: 0 0 calc(100% - 68px);
+  flex: 0 0 calc(100% - 136px);
   border-radius: 24px;
   min-height: 344px;
   display: flex;
@@ -1990,11 +1990,13 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   function slide(v) {
     var track = el(v, "track");
     var card = track.firstElementChild;
-    // Cards are narrower than the track (the next one peeks), so step by the
-    // card's real width plus the gap rather than a percentage of the track.
-    var step = card ? card.offsetWidth + 16 : 0;
+    if (!card) { return; }
+    // Step by the card's real width plus the gap, then pull back by half the
+    // slack so the live slide lands centred rather than against the edge.
+    var step = card.offsetWidth + 16;
+    var centre = (track.parentNode.clientWidth - card.offsetWidth) / 2;
     var dir = stage.dir === "rtl" ? 1 : -1;
-    track.style.transform = "translateX(" + (dir * state.carouselAt * step) + "px)";
+    track.style.transform = "translateX(" + (dir * (state.carouselAt * step - centre)) + "px)";
     Array.prototype.forEach.call(el(v, "dots").children, function (d, k) {
       d.className = k === state.carouselAt ? "on" : "";
     });
