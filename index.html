@@ -414,7 +414,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 /* ── Home ─────────────────────────────────────────────────── */
 [data-scr="home"] { background: var(--paper); }
 .home-top {
-  background: var(--grad);
+  /* the same light ground as the intro — this screen bookends it */
+  background: linear-gradient(180deg, #FAF7EE 0%, #F1ECD8 46%, #D8CA91 100%);
   color: var(--on-gold);
   padding: 30px 34px 130px;
   border-radius: 0 0 34px 34px;
@@ -774,19 +775,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .reticle .c3 { bottom: 0; left: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 18px; }
 .reticle .c4 { bottom: 0; right: 0; border-left: 0; border-top: 0; border-radius: 0 0 18px 0; }
 [data-scr="scan"][data-state="locked"] .corner { border-color: var(--gold-lift); transform: scale(0.9); }
-/* the live camera feed, shown only when a stream is actually running */
-.cam {
-  position: absolute;
-  inset: 8px;
-  width: calc(100% - 16px);
-  height: calc(100% - 16px);
-  object-fit: cover;
-  border-radius: 14px;
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-[data-scr="scan"][data-cam="live"] .cam { opacity: 1; }
-[data-scr="scan"][data-cam="live"] .qr-glyph { opacity: 0; }
+.qr-glyph { opacity: 0; }
 .qr-glyph { transition: transform 0.6s var(--spring), opacity 0.4s; }
 [data-scr="scan"][data-state="locked"] .qr-glyph { transform: scale(0.7); opacity: 0.1; }
 .laser {
@@ -1237,7 +1226,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
    measures 0.08 chroma and 2.4:1 on white.                         */
 [data-scr="report"] {
   background: var(--paper);
-  padding: 36px 40px 34px;
+  padding: 32px 36px 28px;
   gap: 0;
   overflow-y: auto;
 }
@@ -1272,7 +1261,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 }
 
 .rep-hero {
-  margin-top: 22px;
+  margin-top: 18px;
   display: flex;
   align-items: stretch;
   gap: 16px;
@@ -1335,7 +1324,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .stage[dir="rtl"] .rep-live { letter-spacing: 0; text-transform: none; font-family: var(--font-arabic); }
 
 .rep-h {
-  margin: 26px 0 12px;
+  margin: 22px 0 11px;
   font-size: var(--t-sm);
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -1345,7 +1334,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 }
 .stage[dir="rtl"] .rep-h { letter-spacing: 0; text-transform: none; font-family: var(--font-arabic); font-size: var(--t-md); }
 
-.rep-topics { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rep-topics { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
 .rep-topic {
   display: grid;
   grid-template-columns: 108px 1fr auto auto;
@@ -1354,7 +1343,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   background: #fff;
   border: 1px solid rgba(23, 20, 12, 0.08);
   border-radius: 18px;
-  padding: 16px 20px;
+  padding: 13px 20px;
 }
 .rt-name { font-weight: 700; font-size: var(--t-md); }
 .rt-bar {
@@ -1393,18 +1382,112 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .rt-chip.action { background: rgba(168, 41, 32, 0.11); color: #A82920; }
 
 .rep-flag {
-  margin-top: 16px;
+  margin-top: 14px;
   display: flex;
   gap: 16px;
   align-items: flex-start;
   background: rgba(168, 41, 32, 0.06);
   border: 1px solid rgba(168, 41, 32, 0.22);
   border-radius: 20px;
-  padding: 20px 22px;
+  padding: 16px 20px;
 }
 .rep-flag svg { flex: none; margin-top: 2px; }
 .rep-flag b { display: block; font-size: var(--t-md); font-weight: 700; color: #A82920; }
 .rep-flag p { margin: 5px 0 0; font-size: var(--t-sm); color: var(--ink); line-height: 1.5; }
+
+/* the four panels below the headline, as a proper dashboard grid */
+.rep-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 14px;
+}
+.device[data-form="phone"] .rep-grid { grid-template-columns: 1fr; }
+.rep-card {
+  background: #fff;
+  border: 1px solid rgba(23, 20, 12, 0.08);
+  border-radius: 20px;
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.rep-card .rep-h { margin: 0 0 14px; }
+
+/* distribution — one hue for the bars; the faces are the axis labels, so
+   identity never rides on colour (the face ramp fails CVD as a data scale) */
+.rep-dist {
+  flex: 1;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 8px;
+  align-items: end;
+  min-height: 132px;
+}
+.dist-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  height: 100%;
+}
+.dist-col b {
+  font-family: var(--font-latin);
+  font-size: var(--t-xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.dist-col i {
+  display: block;
+  width: 100%;
+  border-radius: 5px 5px 2px 2px;
+  background: var(--gold-dark);
+  min-height: 3px;
+}
+.dist-col svg { display: block; }
+
+/* by service */
+.rep-svc { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; flex: 1; align-content: center; }
+.rep-svc li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; }
+.svc-name { font-size: var(--t-sm); font-weight: 600; }
+.svc-val {
+  font-family: var(--font-latin);
+  font-weight: 800;
+  font-size: var(--t-md);
+  font-variant-numeric: tabular-nums;
+}
+.svc-bar {
+  grid-column: 1 / -1;
+  height: 9px;
+  border-radius: 5px;
+  background: rgba(23, 20, 12, 0.08);
+  overflow: hidden;
+}
+.svc-bar i { display: block; height: 100%; border-radius: 5px; background: var(--gold-dark); }
+.svc-bar i.low { background: #A82920; }
+
+/* ranked reasons */
+.rep-reasons { list-style: none; margin: 0; padding: 0; display: grid; gap: 13px; flex: 1; align-content: center; }
+.rep-reasons li { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: baseline; }
+.rsn-name { font-size: var(--t-sm); font-weight: 600; }
+.rsn-val {
+  font-family: var(--font-latin);
+  font-weight: 800;
+  font-size: var(--t-sm);
+  color: var(--stage-muted);
+  font-variant-numeric: tabular-nums;
+}
+.rsn-bar {
+  grid-column: 1 / -1;
+  height: 7px;
+  border-radius: 4px;
+  background: rgba(23, 20, 12, 0.07);
+  overflow: hidden;
+}
+.rsn-bar i { display: block; height: 100%; border-radius: 4px; background: rgba(107, 93, 49, 0.65); }
 
 .rep-chart { position: relative; }
 .rep-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -1416,7 +1499,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .trend-hit { fill: transparent; cursor: default; }
 .trend-lab {
   font-family: var(--font-latin);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
   fill: var(--ink);
   text-anchor: middle;
@@ -1426,7 +1509,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .trend-hit:hover + .trend-lab.dim { opacity: 1; }
 .trend-day {
   font-family: var(--font-latin);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   fill: var(--stage-muted);
   text-anchor: middle;
@@ -1434,12 +1517,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .stage[dir="rtl"] .trend-day { font-family: var(--font-arabic); }
 .trend-target {
   font-family: var(--font-latin);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   fill: var(--stage-muted);
 }
 .stage[dir="rtl"] .trend-target { font-family: var(--font-arabic); }
-.rep-note { margin-top: 20px; }
+.rep-note { margin-top: 14px; }
 
 /* ── Idle attractor ───────────────────────────────────────── */
 [data-scr="idle"] {
@@ -1519,7 +1602,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
 /* ── Thank you ────────────────────────────────────────────── */
 [data-scr="done"] {
-  background: var(--grad);
+  /* the same light ground as the intro — this screen bookends it */
+  background: linear-gradient(180deg, #FAF7EE 0%, #F1ECD8 46%, #D8CA91 100%);
   color: var(--on-gold);
   align-items: center;
   justify-content: center;
@@ -1735,13 +1819,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
         </svg>
         <span id="langLabel">عربي</span>
       </button>
-      <button class="rail-btn" type="button" id="camBtn" aria-pressed="false">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.6l1.3-2h7.2l1.3 2h1.6A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/>
-          <circle cx="12" cy="13" r="3.6"/>
-        </svg>
-        <span>Camera</span>
-      </button>
       <button class="rail-btn" type="button" id="frameBtn" aria-pressed="true">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="5" y="2" width="14" height="20" rx="3"/><path d="M10.5 18.5h3"/>
@@ -1842,7 +1919,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
       <div class="reticle">
         <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
-        <video class="cam" data-el="cam" playsinline muted></video>
         <div class="qr-glyph"><svg data-el="qr" width="180" height="180" viewBox="0 0 21 21" shape-rendering="crispEdges" aria-hidden="true"></svg></div>
         <div class="lock-tick">
           <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#D8CA91" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1982,8 +2058,27 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
     <div class="rep-flag" data-el="repFlag"></div>
 
-    <h3 class="rep-h" data-i18n="repTrend">Last 7 days</h3>
-    <div class="rep-chart" data-el="repChart"></div>
+    <div class="rep-grid">
+      <section class="rep-card">
+        <h3 class="rep-h" data-i18n="repSpread">How guests rated</h3>
+        <div class="rep-dist" data-el="repDist"></div>
+      </section>
+
+      <section class="rep-card">
+        <h3 class="rep-h" data-i18n="repByService">By service</h3>
+        <ul class="rep-svc" data-el="repSvc"></ul>
+      </section>
+
+      <section class="rep-card">
+        <h3 class="rep-h" data-i18n="repTrend">Last 7 days</h3>
+        <div class="rep-chart" data-el="repChart"></div>
+      </section>
+
+      <section class="rep-card">
+        <h3 class="rep-h" data-i18n="repReasons">Top reasons this week</h3>
+        <ul class="rep-reasons" data-el="repReasons"></ul>
+      </section>
+    </div>
 
     <p class="sheet-note rep-note" data-i18n="repNote">Illustrative figures — the live build reads these from Admin.</p>
   </section>
@@ -2114,7 +2209,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
     base:   { count: 187, covers: 428, flags: 12 },
     topics: { food: 4.5, clean: 4.6, laundry: 3.1 },
     week:   [4.3, 4.4, 4.2, 4.5, 4.1, 3.9, 4.2],
-    worst:  { cat: "laundry", reasons: [["late", 62], ["packing", 24]] }
+    worst:  { cat: "laundry", reasons: [["late", 62], ["packing", 24]] },
+    /* the spread behind the average — 4.1 could be everyone at four, or half
+       fives and half twos, and those need different responses */
+    spread: [96, 54, 21, 11, 6],                       // 5★ … 1★
+    service: [["breakfast", 4.4], ["lunch", 4.1], ["dinner", 3.8]],
+    reasons: [["late", 38], ["wait", 27], ["temp", 19], ["packing", 14]]
   };
   var DAYS = { en: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
                ar: ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"] };
@@ -2183,7 +2283,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
       rAnswers: "Answers", rTopics: "Topics", rTime: "Logged",
       doneNow: "Return to home now",
       returning: "Returning to home in", w2: "Covers served", w3: "Waste per cover",
-      frame: "Device frame", restart: "Restart", fullscreen: "Full screen", camera: "Camera",
+      frame: "Device frame", restart: "Restart", fullscreen: "Full screen",
       steps: ["Open", "Home", "Scan", "Topic", "Rate", "Sent", "Results"],
       repTitle: "Dining Hall B", repSub: "Today · lunch service", repLive: "Live",
       repResponses: "Responses", repOfCovers: "Of covers", repFlagged: "Flagged",
@@ -2191,6 +2291,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
       repGood: "Good", repWatch: "Watch", repAction: "Action needed",
       repNeeds: "Needs attention", repWhy: "Most common reasons:",
       repNote: "Illustrative figures — the live build reads these from Admin.",
+      repSpread: "How guests rated", repByService: "By service",
+      repReasons: "Top reasons this week",
+      svc_breakfast: "Breakfast", svc_lunch: "Lunch", svc_dinner: "Dinner",
       modeTablet: "iPad", modePhone: "iPhone", modeBoth: "Both",
       of: "of"
     },
@@ -2230,7 +2333,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
       rAnswers: "إجابة", rTopics: "محاور", rTime: "الوقت",
       doneNow: "العودة إلى الرئيسية الآن",
       returning: "العودة إلى الرئيسية خلال", w2: "عدد الوجبات المقدمة", w3: "الهدر لكل وجبة",
-      frame: "إطار الجهاز", restart: "إعادة البدء", fullscreen: "ملء الشاشة", camera: "الكاميرا",
+      frame: "إطار الجهاز", restart: "إعادة البدء", fullscreen: "ملء الشاشة",
       steps: ["التشغيل", "الرئيسية", "المسح", "المحور", "التقييم", "الإرسال", "النتائج"],
       repTitle: "صالة الطعام B", repSub: "اليوم · خدمة الغداء", repLive: "مباشر",
       repResponses: "رد", repOfCovers: "من الوجبات", repFlagged: "بلاغ",
@@ -2238,6 +2341,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
       repGood: "جيد", repWatch: "يحتاج متابعة", repAction: "يحتاج تدخّل",
       repNeeds: "يحتاج انتباه", repWhy: "أكثر الأسباب تكراراً:",
       repNote: "أرقام توضيحية — النسخة الفعلية تقرأها من لوحة الإدارة.",
+      repSpread: "توزيع التقييمات", repByService: "حسب الوجبة",
+      repReasons: "أكثر الأسباب هذا الأسبوع",
+      svc_breakfast: "الإفطار", svc_lunch: "الغداء", svc_dinner: "العشاء",
       modeTablet: "آيباد", modePhone: "آيفون", modeBoth: "الاثنين",
       of: "من"
     }
@@ -2273,7 +2379,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
   var state = {
     screen: "boot",
-    lang: "ar",
+    lang: "en",
     mode: "both",
     answers: {},
     activeCat: null,
@@ -2283,7 +2389,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
     scanLocked: false,
     sheetOpen: false,
     torch: false,
-    camera: false,   // presenter opt-in; the demo must never hang on a permission prompt
     idle: false,
     followUp: null,      // { reasons: [], picked: [] } while the sheet is open
     reasons: {},         // { catId: [reason keys] } collected across the session
@@ -2502,7 +2607,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
     // so a line, not bars. Labels only where they earn it — today, and the low.
     var week = REPORT.week.slice();
     week[6] = overall;
-    var W = 720, H = 168, PAD = 26, TOP = 26, BOT = 34;
+    var W = 340, H = 150, PAD = 20, TOP = 26, BOT = 30;
     var lo = 3.0, hi = 5.0;                       // a band around the data, labelled
     var X = function (i) { return PAD + i * (W - PAD * 2) / (week.length - 1); };
     var Y = function (val) { return TOP + (1 - (val - lo) / (hi - lo)) * (H - TOP - BOT); };
@@ -2532,6 +2637,40 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
       svg += '<text class="trend-day" x="' + X(i) + '" y="' + (H - 8) + '">' + DAYS[L][i] + "</text>";
     });
     el(v, "repChart").innerHTML = svg + "</svg>";
+
+    // ── distribution: one hue, faces as the labels ──
+    var spread = REPORT.spread.slice();
+    for (catId in state.answers) {
+      state.answers[catId].forEach(function (i) { spread[i] += 1; });   // face 0 = 5★
+    }
+    var top = Math.max.apply(null, spread);
+    el(v, "repDist").innerHTML = spread.map(function (cnt, i) {
+      return '<div class="dist-col" title="' + (L === "ar" ? SCALE[i].ar : SCALE[i].en) + " · " + cnt + '">' +
+        "<b>" + cnt + "</b>" +
+        '<i style="height:' + Math.max(3, cnt / top * 78) + '%"></i>' +
+        faceSVG(i, 26) + "</div>";
+    }).join("");
+
+    // ── by service ──
+    el(v, "repSvc").innerHTML = REPORT.service.map(function (row) {
+      return "<li><span class='svc-name'>" + t("svc_" + row[0]) + "</span>" +
+        "<b class='svc-val'>" + row[1].toFixed(1) + "</b>" +
+        "<span class='svc-bar'><i class='" + (row[1] < 4 ? "low" : "") +
+        "' style='width:" + (row[1] / 5 * 100).toFixed(1) + "%'></i></span></li>";
+    }).join("");
+
+    // ── ranked reasons, most cited first ──
+    var lookup = {};
+    Object.keys(REASONS).forEach(function (k) {
+      REASONS[k].forEach(function (r) { lookup[r.id] = r; });
+    });
+    var maxR = REPORT.reasons[0][1];
+    el(v, "repReasons").innerHTML = REPORT.reasons.map(function (row) {
+      var r = lookup[row[0]];
+      return "<li><span class='rsn-name'>" + (L === "ar" ? r.ar : r.en) + "</span>" +
+        "<b class='rsn-val'>" + row[1] + "</b>" +
+        "<span class='rsn-bar'><i style='width:" + (row[1] / maxR * 100).toFixed(0) + "%'></i></span></li>";
+    }).join("");
   }
 
   function renderFollow(v) {
@@ -2680,7 +2819,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
   function go(screen) {
     clearTimers();
-    if (state.screen === "scan" && screen !== "scan") { stopCamera(); }
     state.screen = screen;
     state.picked = null;
     if (screen === "scan") { state.scanLocked = false; state.sheetOpen = false; }
@@ -2692,54 +2830,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
     if (screen === "done") { runDone(); }
   }
 
-  /* Live scanning is opt-in and every failure path falls back to the timed
-     simulation, so the demo cannot stall on a permission prompt, an http
-     origin, or a browser without BarcodeDetector. */
-  var cam = { stream: null, raf: null, detector: null };
-
-  function stopCamera() {
-    if (cam.raf) { cancelAnimationFrame(cam.raf); cam.raf = null; }
-    if (cam.stream) { cam.stream.getTracks().forEach(function (t) { t.stop(); }); cam.stream = null; }
-    views.forEach(function (v) {
-      var video = el(v, "cam");
-      video.srcObject = null;
-      v.root.querySelector('[data-scr="scan"]').dataset.cam = "off";
-    });
-  }
-
-  function startCamera(onFound, onFail) {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !("BarcodeDetector" in window)) {
-      onFail("unsupported"); return;
-    }
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } } })
-      .then(function (stream) {
-        cam.stream = stream;
-        cam.detector = new window.BarcodeDetector({ formats: ["qr_code"] });
-        views.forEach(function (v) {
-          var video = el(v, "cam");
-          video.srcObject = stream;
-          video.play().catch(function () {});
-          v.root.querySelector('[data-scr="scan"]').dataset.cam = "live";
-        });
-        var video = el(views[0], "cam");
-        (function tick() {
-          if (!cam.stream || state.screen !== "scan" || state.scanLocked) { return; }
-          cam.raf = requestAnimationFrame(tick);
-          if (video.readyState < 2) { return; }
-          cam.detector.detect(video)
-            .then(function (codes) { if (codes.length) { onFound(codes[0].rawValue); } })
-            .catch(function () {});
-        }());
-      })
-      .catch(function () { onFail("denied"); });
-  }
-
   function runScan() {
-    var locked = false;
     function lock() {
-      if (locked) { return; }
-      locked = true;
-      stopCamera();
       state.scanLocked = true;
       views.forEach(renderScan);
       if (navigator.vibrate) { navigator.vibrate([14, 60, 14]); }
@@ -2749,14 +2841,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
       }, 480);
     }
 
-    if (state.camera) {
-      startCamera(lock, function () {
-        state.camera = false;                 // quietly drop back to the simulation
-        paintRail();
-        later(lock, 2400);
-      });
-      return;
-    }
     later(lock, 2400);
   }
 
@@ -2875,9 +2959,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
         "<em>" + String(i + 1).padStart(2, "0") + "</em><span>" + labels[i] + "</span></button>";
     }).join("");
 
-    $("#camBtn").setAttribute("aria-pressed", String(state.camera));
-    $("#camBtn").lastElementChild.textContent = t("camera");
-
     $("#modes").innerHTML = [
       ["tablet", "modeTablet", '<rect x="3" y="2" width="18" height="20" rx="3"/><path d="M10 18.6h4"/>'],
       ["phone", "modePhone", '<rect x="7" y="2" width="10" height="20" rx="3"/><path d="M10.6 18.6h2.8"/>'],
@@ -2932,11 +3013,6 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   $("#langBtn").addEventListener("click", function () {
     state.lang = state.lang === "en" ? "ar" : "en";
     applyLang();
-  });
-  $("#camBtn").addEventListener("click", function () {
-    state.camera = !state.camera;
-    this.setAttribute("aria-pressed", String(state.camera));
-    if (state.screen === "scan") { go("scan"); }
   });
   $("#frameBtn").addEventListener("click", function () {
     var on = stage.dataset.frame === "on";
